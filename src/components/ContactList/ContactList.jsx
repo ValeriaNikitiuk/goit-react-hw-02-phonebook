@@ -2,14 +2,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import s from './ContactList.module.css';
 
-const ContactList = ({ contacts, onDeleteHandler }) => {
+const ContactList = ({ contacts, deleteContact }) => {
   return (
     <ul className={s.listContact}>
       {contacts.map(contact => (
-        <li key={contact.id}>
+        <li className={s.listItem} key={contact.id}>
           {contact.name + ':' + contact.number}
 
-          <button type="button" onClick={onDeleteHandler}>
+          <button
+            className={s.listButton}
+            type="button"
+            onClick={() => deleteContact(contact.id)}
+          >
             {/* () => onDeleteHandler(contact.id) */}
             Delete
           </button>

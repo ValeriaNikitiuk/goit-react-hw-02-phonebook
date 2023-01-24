@@ -32,10 +32,18 @@ class App extends Component {
     return true;
   };
 
-  onFilters = e => {
-    this.setState({ filter: e.currentTarget.value });
+  changeFilter = ({ target }) => {
+    this.setState({ filter: target.value });
   };
 
+  getVisibleContacts = () => {
+    const { filter, contacts } = this.state;
+    const normalizedFilter = filter.toLowerCase();
+
+    return contacts.filter(contact =>
+      contact.name.toLowerCase().includes(normalizedFilter)
+    );
+  };
   onDeleteHandler = contactId => {
     this.setState(prevState => ({
       contacts: prevState.contacts.filter(contact => contact.id !== contactId),
@@ -43,15 +51,14 @@ class App extends Component {
   };
 
   render() {
-    const visibleContacts = this.state.contacts.filter(contact =>
-      contact.name.toLowerCase().includes(this.state.filter.toLowerCase())
-    );
+    const { filter } = this.state;
+    const visibleContacts = this.getVisibleContacts();
     return (
       <div>
         <h1>Phonebook</h1>
         <ContactForm onSubmit={this.addContact} />
         <h1>Contacts</h1>
-        <Filter value={this.filter} onChange={this.onFilters} />
+        <Filter value={filter} onChange={this.changeFilter} />
         <ContactList
           deleteContact={this.onDeleteHandler}
           contacts={visibleContacts}
